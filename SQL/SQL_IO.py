@@ -94,7 +94,10 @@ class Database():
 	def auto_id(self):
 		"""return usable, unique id for tables_dict
 		"""
-		pass
+		id = 0
+		while not self.check_id(id):
+			id+=1
+		return id
 		
 	
 	
