@@ -1,5 +1,6 @@
 import sqlite3
 import os
+import copy
 
 class Database():
 	def __init__(self):
@@ -75,12 +76,8 @@ class Database():
 
 	def read(self):
 		"""return table_dict as new not connected object
-		"""
-		temp = {}
-		for key, value in self.tables_dict.items():
-			temp[key]=value
-		
-		return temp
+		"""	 
+		return copy.deepcopy(self.tables_dict)
 
 	def check_id(self, id):
 		"""will return true if id is NOT in use
@@ -89,10 +86,10 @@ class Database():
 		for key, value in self.tables_dict.items():
 			for item in value:
 				temp_ids.append(item["id"])
-		if id in temp_ids:
-			return False
-		else:
+		if id not in temp_ids:
 			return True
+		else:
+			return False
 		
 	def auto_id(self):
 		"""return usable, unique id for tables_dict
