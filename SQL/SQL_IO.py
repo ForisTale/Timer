@@ -5,6 +5,7 @@ class Database():
 	def __init__(self):
 		self.tables_dict = {}
 		self.load()
+		self.new_entry = {}
 	
 	
 	def load(self, database="timer.db", file_path=os.getcwd()+"\\"):
@@ -53,14 +54,24 @@ class Database():
 		
 	
 		
-	def add_entry(self, id, start, end, **kwargs):
+	def add_entry(self, dict):
 		"""will add entry into tables_dict
-		unique id, use check_id method or auto_id method 
-		start need to be datetime object 
-		end need to be datetime object
-		kwargs are dict with tags where {tag name: 0 or 1}
+		dict need to be send as {table_name:[list of new entry as dict]}
+		
+		plan to do: if table name or key in dict don't match names and keys in tables_dict then it will raise exception.
 		"""
-		pass
+		for key, value in dict.items():
+			if key in self.tables_dict:
+				if check_id(dict):
+					self.tables_dict[key].append(value)
+					self.new_entry[key].append(value)
+				else:
+					print("Id need to be unique")
+				
+			else:
+				print("Table name is incorrect")
+		
+		
 
 	def read(self):
 		"""return table_dict as new not connected object
@@ -72,9 +83,16 @@ class Database():
 		return temp
 
 	def check_id(self, id):
-		"""will return true if id is in use
+		"""will return true if id is NOT in use
 		"""
-		pass
+		temp_ids = []
+		for key, value in self.tables_dict.items():
+			for item in value:
+				temp_ids.append(item["id"])
+		if id in temp_ids:
+			return False
+		else:
+			return True
 		
 	def auto_id(self):
 		"""return usable, unique id for tables_dict
