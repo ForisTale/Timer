@@ -8,6 +8,7 @@ class Timer():
 	def __init__(self):
 		self.data = {"timer":[]}
 		self.time = []
+		self.comments = ""
 		
 	
 	
@@ -31,4 +32,16 @@ class Timer():
 		"""
 		pass
 	
+	def comment(self):
+		"""take comment
+		"""
+		self.comments+=" "+input("Please write comment. ")
 	
+	def reset_comments(self):
+		self.comments = ""
+		
+	def tags(self):
+		"""Take input whih tags marks
+		"""
+			pass
+		
