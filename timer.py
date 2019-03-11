@@ -14,18 +14,21 @@ class Timer():
 	def start(self):
 		"""start time
 		"""
-		pass
-		#self.time.append()
+		self.time = []
+		self.time.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
 		
 		
 	def end(self):
 		"""end time
 		"""
-		pass
+		if self.time:
+			self.time.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+		else:
+			print("First use command start.")
 	
-	def set_data():
+	def set_data(self):
 		"""set all need data into usefull schema
 		"""
-	
+		pass
 	
 	
