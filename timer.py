@@ -10,6 +10,7 @@ class Timer():
 		self.time = []
 		self.comments = ""
 		self.tags = {"python":0, "sql":0, "ang":0, "jap":0}
+		self.id = 0
 		
 	
 	
@@ -69,6 +70,18 @@ class Timer():
 
 	def set_data(self):
 		"""set all need data into usefull schema
+		"""
+		if time:
+			combine = {"id":self.id, "start":self.time[0], "end":self.time[1], "comment":self.comments, **self.tags}
+			self.data["timer"].append(combine)
+		else:
+			print("Please start time count.")
+		
+	
+	
+	
+	def initialize(self):
+		"""start program data
 		"""
 		pass
 
