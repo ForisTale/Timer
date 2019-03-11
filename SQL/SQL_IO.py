@@ -3,17 +3,24 @@ import os
 import copy
 
 class Database():
+	"""
+	"""
 	def __init__(self):
 		self.tables_dict = {}
 		self.load()
 		self.new_entry = {}
-	
+		self.delete_entry = {}
+	"""
+	def __repr__(self):
+		return str(self.tables_dict)
+	"""
 	
 	def load(self, database="timer.db", file_path=os.getcwd()+"\\"):
 		"""This method will load database into two dictionaries
 		database need to be string with file name
 		file_path need to be string with path to database file
 		return all tables from database as {table:[list of row as dict]} into variable table_dict"""
+		self.tables_dict = {}
 		con=sqlite3.connect(file_path+database)
 		con.row_factory = sqlite3.Row
 		cur=con.cursor()
@@ -45,33 +52,59 @@ class Database():
 	
 	
 	def save(self, database="timer.db", file_path=os.getcwd()+"\\"):
-		"""This method will save database into file
-		It takes dict as {table:[list of row as dict]}"""
+		"""This method will save changes in database into file
+		"""
 		con = sqlite3.connect(file_path+database)
 		con.row_factory=sqlite3.Row
 		cur = con.cursor()
 		
+		if self.new_entry:
+			for key, value in self.new_entry.items():
+				table = key
+				for item in value:
+					keys = []
+					values = []
+					for k in item.keys():
+						keys.append(k)
+						values.append(item[k])
+					keys = tuple(keys)
+					values = tuple(values)
+					
+
+					cur.execute("INSERT INTO {table} {keys} VALUES {values}".format(table = key, keys = keys, values = values))
+		
+		if self.delete_entry:
+			pass
 		
 		
-	
+		con.commit()
+		con.close()
 		
 	def add_entry(self, dict):
-		"""will add entry into tables_dict
+		"""will add entry into new_entry.
 		dict need to be send as {table_name:[list of new entry as dict]}
 		
 		plan to do: if table name or key in dict don't match names and keys in tables_dict then it will raise exception.
+					add posibility of add only part of column, for empty none/null
 		"""
+
 		for key, value in dict.items():
 			if key in self.tables_dict:
-				if check_id(dict):
-					self.tables_dict[key].append(value)
-					self.new_entry[key].append(value)
-				else:
-					print("Id need to be unique")
-				
+				self.new_entry[key]=[]
+				for item in value:
+					if item.keys()==self.tables_dict[key][0].keys() or not self.tables_dict[key][0]:
+						if self.check_id(item["id"]):
+							#self.tables_dict[key].append(value)
+							self.new_entry[key].append(item)
+						else:
+							print("Id need to be unique, use check_id or auto_id")
+					else:
+						print("Column names are not the same as they are in table.")
 			else:
 				print("Table name is incorrect")
 		
+		self.save()
+		self.load()
 		
 
 	def read(self):
@@ -79,13 +112,13 @@ class Database():
 		"""	 
 		return copy.deepcopy(self.tables_dict)
 
-	def check_id(self, id):
+	def check_id(self, id, id_name="id"):
 		"""will return true if id is NOT in use
 		"""
 		temp_ids = []
 		for key, value in self.tables_dict.items():
 			for item in value:
-				temp_ids.append(item["id"])
+				temp_ids.append(item[id_name])
 		if id not in temp_ids:
 			return True
 		else:
@@ -100,12 +133,23 @@ class Database():
 		return id
 		
 	
+	def delete_entry(self, table, id):
+		"""will mark entry for delete
+		"""
+		pass
 	
 	
+	def add_colunm(self, table, column_name, data_type):
+		"""It will mark, that you want add new column into table. To save use save method! 
+		To avoid errors use this method separetly from other methods and save imedietly.
+		data_type integer, string/text, none/null, real/float, blob.
+		"""
+		pass
 	
-	
-	
-
+	def update_table(self, table, dict):
+		"""
+		dict need to be dict with id key and column_name key that you want edit
+		"""
 
 
 
