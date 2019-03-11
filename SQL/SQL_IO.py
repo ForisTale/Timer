@@ -96,9 +96,10 @@ class Database():
 						if self.check_id(item["id"]):
 							#self.tables_dict[key].append(value)
 							self.new_entry[key].append(item)
+							print("Entry: ", item)
 						else:
 							item["id"] = self.auto_id()
-							print("Id was used by other row, new unique id wass added. New id is: {}".format(item["id"]))
+							print("Id was used by other row, new unique id wass added. New id is: {}\\nWhole entry now look like: {}".format(item["id"]), item)
 							self.new_entry[key].append(item)
 					else:
 						print("Column names are not the same as they are in table.")
