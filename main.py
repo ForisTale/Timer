@@ -1,4 +1,14 @@
-import sql.sql_io as io
+from sql.sql_io import Database
+from timer import Timer, initialize
 
 
-io.load() 
+
+
+
+
+
+
+d = Database()
+t = Timer()
+
+initialize(t, d)

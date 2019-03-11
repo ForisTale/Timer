@@ -1,3 +1,4 @@
+from sql.sql_io import Database
 import datetime
 
 
@@ -9,7 +10,7 @@ class Timer():
 		self.data = {"timer":[]}
 		self.time = []
 		self.comments = ""
-		self.tags = {"python":0, "sql":0, "ang":0, "jap":0}
+		self.tags = {"python":0, "sql":0, "eng":0, "jap":0}
 		self.id = 0
 		
 	
@@ -19,7 +20,7 @@ class Timer():
 		"""
 		self.time = []
 		self.time.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-		print("Program now start count time.")
+		print("The program starts counting the time.")
 		
 		
 	def end(self):
@@ -27,7 +28,7 @@ class Timer():
 		"""
 		if self.time:
 			self.time.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
-			print("Program now end count time.")
+			print("The program ends the time counting.")
 		else:
 			print("First use command start.")
 	
@@ -35,7 +36,7 @@ class Timer():
 	def comment(self):
 		"""take comment
 		"""
-		self.comments+=" "+input("Please write comment. ")
+		self.comments+=" "+input("Please write comment: ")
 	
 	def reset_comments(self):
 		self.comments = ""
@@ -46,7 +47,7 @@ class Timer():
 		t = ""
 		for item in self.tags.keys():
 			t+=item+" "
-		text = "Please write tags you want separate by space. Tags you can choose are: "+t
+		text = "Please write tags you want separate by space. Tags you can choose are: "+t+"."
 		inp = input(text)
 		inp = inp.split(" ")
 		while True:
@@ -65,7 +66,10 @@ class Timer():
 			self.tags[item] = 1
 				
 
-
+	def reset_data(self):
+		"""reset self.data
+		"""
+		self.data = {"timer":[]}
 
 
 
@@ -73,7 +77,7 @@ class Timer():
 	def set_data(self):
 		"""set all need data into usefull schema
 		"""
-		if time:
+		if self.time:
 			combine = {"id":self.id, "start":self.time[0], "end":self.time[1], "comment":self.comments, **self.tags}
 			self.data["timer"].append(combine)
 		else:
@@ -84,48 +88,53 @@ class Timer():
 		"""
 		self.id = input("Please write id number for this session: ")
 	
+
+
 	
-	def initialize(self):
-		"""start program data
-		"""
-		text = "Please write command, if need write help for list of commands."
-		help = "Commands are: \n\"auto\" for start program automatically.\nCommands for manual usage:\n\"start_time\" for starting time count.\n\"end_time\" for end time count.\n\"comment\" for add coment.\n\"tag\" for add tags.\n\"id\" for chose id number.\n\"read\" for see session entry\n\"save\" for saving session\n\n\"close\" for closing program."
-		while True:
-			inp = input(text)
+def initialize(t, d):
+	"""start program data
+	"""
+	text = "Please write command, if need help, write \"help\" for list of commands.\n"
+	help = "Commands are: \n\"auto\" for start program automatically.\nCommands for manual usage:\n\"start_time\" for starting time count.\n\"end_time\" for end time count.\n\"comment\" for add coment.\n\"tag\" for add tags.\n\"id\" for chose id number.\n\"read\" for see session entry\n\"save\" for saving session\n\n\"close\" for closing program."
+	while True:
+		inp = input(text)
+		
+		if inp=="auto":
+			t.start()
+			while True:
+				input("Press ENTER to ends the time counting.")
+				q = input("Are you sure that you want to ends the time counting?\nWrite \"y\" if yes. ")
+				if q=="y" or q=="Y":
+					break
+			t.end()
+			t.comment()
+			t.add_tags()
+			t.set_data()
+			d.add_entry(t.data)
+			t.reset_data()
 			
-			if inp=="auto":
-				pass
-			elif inp=="start_time":
-				pass
-			elif inp=="end_time":
-				pass
-			elif inp=="comment":
-				pass
-			elif inp=="tag":
-				pass
-			elif inp=="id":
-				pass
-			elif inp=="read":
-				pass
-			elif inp=="save":
-				pass
-			elif inp=="close":
-				pass
-			elif inp=="help":
-				print(help)
+		elif inp=="start_time":
+			t.start()
+		elif inp=="end_time":
+			t.end()
+		elif inp=="comment":
+			t.comment()
+		elif inp=="tag":
+			t.add_tags()
+		elif inp=="id":
+			t.set_id()
+			if not d.check_id(t.id):
+				print("This id: {} is in use, if you don't set other id, id will change automatically when save.".format(t.id))
 			else:
-				print("I don't recognise this command, for commands list use \"help\"")
-			
-			
-
-
-
-
-
-
-
-
-
-
-
-
+				print("Id was set to {}.".format(t.id))
+		elif inp=="read":
+			print("Database: ", d.read())
+		elif inp=="save":
+			d.add_entry(t.data)
+			t.reset_data()
+		elif inp=="close":
+				break
+		elif inp=="help":
+			print(help)
+		else:
+			print("I don't recognise this command, for commands list use \"help\"")
