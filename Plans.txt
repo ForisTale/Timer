@@ -6,3 +6,15 @@ Assumptions: Program for measuring time, use to measure how much time I spend on
 - Use SQLite to manage data.
 - Tags, in new table, connect by ID, tags: JAP, ENG, PROGRAMING, SQL, PYTHON
 - Different default querys, statistics.
+
+Core functions:
+- load database
+- create table
+- add entry
+
+Addictional functions:
+- update table
+- delete row
+- delete column
+- query
+
