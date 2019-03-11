@@ -87,7 +87,6 @@ class Database():
 		plan to do: if table name or key in dict don't match names and keys in tables_dict then it will raise exception.
 					add posibility of add only part of column, for empty none/null
 		"""
-
 		for key, value in dict.items():
 			if key in self.tables_dict:
 				self.new_entry[key]=[]
@@ -99,7 +98,7 @@ class Database():
 							print("Entry: ", item)
 						else:
 							item["id"] = self.auto_id()
-							print("Id was used by other row, new unique id wass added. New id is: {}\\nWhole entry now look like: {}".format(item["id"]), item)
+							print("Id was used by other row, new unique id was added. New id is: {}\nWhole entry: {}".format(item["id"], item))
 							self.new_entry[key].append(item)
 					else:
 						print("Column names are not the same as they are in table.")
