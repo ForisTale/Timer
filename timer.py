@@ -19,6 +19,7 @@ class Timer():
 		"""
 		self.time = []
 		self.time.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+		print("Program now start count time.")
 		
 		
 	def end(self):
@@ -26,6 +27,7 @@ class Timer():
 		"""
 		if self.time:
 			self.time.append(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+			print("Program now end count time.")
 		else:
 			print("First use command start.")
 	
@@ -77,14 +79,44 @@ class Timer():
 		else:
 			print("Please start time count.")
 		
-	
+	def set_id(self):
+		"""alow set id number
+		"""
+		self.id = input("Please write id number for this session: ")
 	
 	
 	def initialize(self):
 		"""start program data
 		"""
-		pass
-
+		text = "Please write command, if need write help for list of commands."
+		help = "Commands are: \n\"auto\" for start program automatically.\nCommands for manual usage:\n\"start_time\" for starting time count.\n\"end_time\" for end time count.\n\"comment\" for add coment.\n\"tag\" for add tags.\n\"id\" for chose id number.\n\"read\" for see session entry\n\"save\" for saving session\n\n\"close\" for closing program."
+		while True:
+			inp = input(text)
+			
+			if inp=="auto":
+				pass
+			elif inp=="start_time":
+				pass
+			elif inp=="end_time":
+				pass
+			elif inp=="comment":
+				pass
+			elif inp=="tag":
+				pass
+			elif inp=="id":
+				pass
+			elif inp=="read":
+				pass
+			elif inp=="save":
+				pass
+			elif inp=="close":
+				pass
+			elif inp=="help":
+				print(help)
+			else:
+				print("I don't recognise this command, for commands list use \"help\"")
+			
+			
 
 
 
