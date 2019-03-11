@@ -1,6 +1,6 @@
 import sqlite3
 import os
-import copy
+
 
 class Database():
 	"""
@@ -72,6 +72,7 @@ class Database():
 					
 
 					cur.execute("INSERT INTO {table} {keys} VALUES {values}".format(table = key, keys = keys, values = values))
+			self.new_entry = {}
 		
 		if self.delete_entry:
 			pass
@@ -91,28 +92,38 @@ class Database():
 			if key in self.tables_dict:
 				self.new_entry[key]=[]
 				for item in value:
-					if item.keys()==self.tables_dict[key][0].keys() or not self.tables_dict[key][0]:
-						if self.check_id(item["id"]):
-							#self.tables_dict[key].append(value)
-							self.new_entry[key].append(item)
-							print("Entry: ", item)
+					if self.tables_dict[key]:
+						if item.keys()==self.tables_dict[key][0].keys() or not self.tables_dict[key][0]:
+							if self.check_id(item["id"]):
+								#self.tables_dict[key].append(value)
+								self.new_entry[key].append(item)
+								print("Entry: ", item)
+							else:
+								item["id"] = self.auto_id()
+								print("Id was used by other row, new unique id was added. New id is: {}\nWhole entry: {}".format(item["id"], item))
+								self.new_entry[key].append(item)
 						else:
-							item["id"] = self.auto_id()
-							print("Id was used by other row, new unique id was added. New id is: {}\nWhole entry: {}".format(item["id"], item))
-							self.new_entry[key].append(item)
+							print("Column names are not the same as they are in table.")
 					else:
-						print("Column names are not the same as they are in table.")
+						self.new_entry[key].append(item)
+						print("Entry: ", item)
+						
 			else:
 				print("Table name is incorrect")
 		
+		
 		self.save()
 		self.load()
-		
 
 	def read(self):
-		"""return table_dict as new not connected object
+		"""return table_dict as nice looking string
 		"""	 
-		return copy.deepcopy(self.tables_dict)
+		string = ""
+		for key, value in self.tables_dict.items():
+			string+="Table: "+key+"\n"
+			for item in value:
+				string+=str(item)+"\n"
+		return string
 
 	def check_id(self, id, id_name="id"):
 		"""will return true if id is NOT in use
