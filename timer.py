@@ -9,6 +9,7 @@ class Timer():
 		self.data = {"timer":[]}
 		self.time = []
 		self.comments = ""
+		self.tags = {"python":0, "sql":0, "ang":0, "jap":0}
 		
 	
 	
@@ -27,10 +28,6 @@ class Timer():
 		else:
 			print("First use command start.")
 	
-	def set_data(self):
-		"""set all need data into usefull schema
-		"""
-		pass
 	
 	def comment(self):
 		"""take comment
@@ -40,8 +37,50 @@ class Timer():
 	def reset_comments(self):
 		self.comments = ""
 		
-	def tags(self):
+	def add_tags(self):
 		"""Take input whih tags marks
 		"""
-			pass
-		
+		t = ""
+		for item in self.tags.keys():
+			t+=item+" "
+		text = "Please write tags you want separate by space. Tags you can choose are: "+t
+		inp = input(text)
+		inp = inp.split(" ")
+		while True:
+			index = 0	
+			for item in inp:
+				if item in self.tags:
+					index+=1
+				else:
+					print("There is no such tag: "+item)
+					inp = input(text)
+					inp = inp.split(" ")
+					break
+			if index == len(inp):
+				break
+		for item in inp:
+			self.tags[item] = 1
+				
+
+
+
+
+
+
+	def set_data(self):
+		"""set all need data into usefull schema
+		"""
+		pass
+
+
+
+
+
+
+
+
+
+
+
+
+
