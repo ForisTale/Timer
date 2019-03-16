@@ -10,7 +10,7 @@ class Timer():
 		self.data = {"timer":[]}
 		self.time = []
 		self.comments = ""
-		self.tags = {"python":0, "sql":0, "eng":0, "jap":0}
+		self.tags = {"python":0, "sql":0, "eng":0, "jap":0, "other":0}
 		self.id = 0
 		
 	
@@ -36,10 +36,13 @@ class Timer():
 	def comment(self):
 		"""take comment
 		"""
+		self.comments = ""
 		self.comments+=" "+input("Please write comment: ")
 	
-	def reset_comments(self):
-		self.comments = ""
+			
+	def reset_tags(self):
+		for key, value in self.tags.items():
+			self.tags[key] = 0
 		
 	def add_tags(self):
 		"""Take input whih tags marks
@@ -47,7 +50,7 @@ class Timer():
 		t = ""
 		for item in self.tags.keys():
 			t+=item+" "
-		text = "Please write tags you want separate by space. Tags you can choose are: "+t+"."
+		text = "Please write tags you want separate by space. Tags you can choose are: "+t+"\n"
 		inp = input(text)
 		inp = inp.split(" ")
 		while True:
@@ -112,6 +115,7 @@ def initialize(t, d):
 			t.set_data()
 			d.add_entry(t.data)
 			t.reset_data()
+			t.reset_tags()
 			
 		elif inp=="start_time":
 			t.start()
