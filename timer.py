@@ -93,17 +93,17 @@ def initialize(t, d):
     """
     text = "Please write command, if need help, write \"help\" for list of "\
            "commands.\n "
-    help_txt = """Commands are: 
-\"auto\" for start program automatically.
-Commands for manual usage:
-\"start_time\" for starting time count.
-\"end_time\" for end time count.
-\"comment\" for add comment.
-\"tag\" for add tags.
-\"id\" for chose id number.
-\"read\" for see session entry
-\"save\" for saving session
-\"close\" for closing program. """
+    help_txt = ("Commands are:"
+                "\n\"auto\" for start program automatically."
+                "\nCommands for manual usage:"
+                "\n\"start_time\" for starting time count."
+                "\n\"end_time\" for end time count."
+                "\n\"comment\" for add comment."
+                "\n\"tag\" for add tags."
+                "\n\"id\" for chose id number."
+                "\n\"read\" for see session entry"
+                "\n\"save\" for saving session"
+                "\n\"close\" for closing program.")
     while True:
         inp = input(text).lower()
 
