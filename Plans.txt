@@ -17,4 +17,5 @@ Addictional functions:
 - delete row
 - delete column
 - query
+- print start and maybe end time after use command
 

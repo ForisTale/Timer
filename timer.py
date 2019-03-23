@@ -21,7 +21,7 @@ class Timer:
         print("The program starts counting the time at: "+str(time.time())[0:8])
 
     def end(self):
-        """end time
+        """end time.
         """
         if self.time:
             self.time.append(datetime.datetime.now().strftime

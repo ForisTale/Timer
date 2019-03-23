@@ -68,8 +68,7 @@ class Database:
                     values = tuple(values)
 
                     cur.execute(
-                        "INSERT INTO {table} {keys} VALUES {values}".format
-                        (table=key, keys=keys, values=values))
+                        "INSERT INTO {table} {keys} VALUES {values}".format(table=key, keys=keys, values=values))
             self.new_entry = {}
 
         if self.delete_entry:
