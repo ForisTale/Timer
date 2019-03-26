@@ -2,6 +2,8 @@ def initialize(t, d):
     """start program data
     """
     text = "Please write command, if need help, write \"help\" for list of commands.\n "
+    dont_recognize_text = "I don't recognise this command, for commands list use \"help\""
+
     help_txt = ("Commands are:"
                 "\n\"auto\" for start program automatically."
                 "\nCommands for manual usage:"
@@ -49,7 +51,22 @@ def initialize(t, d):
             else:
                 print("Id was set to {}.".format(t.id))
         elif inp == "read":
-            print("Database: ", d.read())
+            while True:
+                choice = input("Please choice read mode, available modes:"
+                               "\n\"all\" see all entry's."
+                               "\n\"last\" see last entry"
+                               "\n\"few\" see last few entry's, you choice how many.\n")
+                if choice == "all":
+                    print("Database: " + d.read())
+                    break
+                elif choice == "last":
+                    pass
+                elif choice == "few":
+                    pass
+                elif choice == "help":
+                    pass
+                else:
+                    print(dont_recognize_text[:30]+".")
         elif inp == "save":
             d.add_entry(t.data)
             t.reset_data()
@@ -58,5 +75,4 @@ def initialize(t, d):
         elif inp == "help":
             print(help_txt)
         else:
-            print("I don't recognise this command, for commands list use"  
-                  "\"help\"")
+            print(dont_recognize_text)
