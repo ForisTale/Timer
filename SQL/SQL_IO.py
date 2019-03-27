@@ -118,14 +118,16 @@ class Database:
         """return table_dict as nice looking string
         """
         string = "Database: "
-        for key, value in self.tables_dict.items():
-            string += "Table: " + key + "\n"
-            if limit <= len(value):
-                for item in value[-limit:]:
-                    string += str(item) + "\n"
+        for tableName, tableItems in self.tables_dict.items():
+            string += "Table: " + tableName + "\n"
+            if limit <= len(tableItems):
+                for each_table_item in tableItems[-limit:]:
+                    for key, value in each_table_item.items():
+                        string += key.title() + ": " + str(value) + ", "
+                    string += "\n"
             else:
                 return ("You want to see more records than we have. Now we have : "
-                        + str(len(value)) + " records.")
+                        + str(len(tableItems)) + " records.")
         return string
 
     def check_id(self, id_num, id_name="id"):
