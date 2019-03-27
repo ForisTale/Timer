@@ -114,14 +114,18 @@ class Database:
         self.save()
         self.load()
 
-    def read(self):
+    def read(self, limit=0):
         """return table_dict as nice looking string
         """
-        string = ""
+        string = "Database: "
         for key, value in self.tables_dict.items():
             string += "Table: " + key + "\n"
-            for item in value:
-                string += str(item) + "\n"
+            if limit <= len(value):
+                for item in value[-limit:]:
+                    string += str(item) + "\n"
+            else:
+                return ("You want to see more records than we have. Now we have : "
+                        + str(len(value)) + " records.")
         return string
 
     def check_id(self, id_num, id_name="id"):

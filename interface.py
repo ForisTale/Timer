@@ -57,12 +57,18 @@ def initialize(t, d):
                                "\n\"last\" see last entry"
                                "\n\"few\" see last few entry's, you choice how many.\n")
                 if choice == "all":
-                    print("Database: " + d.read())
+                    print(d.read())
+                    enter_to_continue()
                     break
                 elif choice == "last":
-                    pass
+                    print(d.read(1))
+                    enter_to_continue()
+                    break
                 elif choice == "few":
-                    pass
+                    amount = input("Please write how many records you want to see: ")
+                    print(d.read(int(amount)))
+                    enter_to_continue()
+                    break
                 elif choice == "help":
                     pass
                 else:
@@ -76,3 +82,7 @@ def initialize(t, d):
             print(help_txt)
         else:
             print(dont_recognize_text)
+
+
+def enter_to_continue():
+    input("Press enter to continue.")
