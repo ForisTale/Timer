@@ -30,23 +30,24 @@ class Database:
 
         # get all table names from database
         cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        tables = []
-        for table in cur.fetchall():
-            tables.append(table[0])
-        tables = tuple(tables)
+        table_names = []
+        table = cur.fetchone()
+        while table:
+            table_names.append(table[0])
+            table = cur.fetchone()
+        table_names = tuple(table_names)
 
         # load tables into {table:[list of row as dict]} and save to table_dict
-        for tab_ind in range(len(tables)):
-            cur.execute("SELECT * FROM {}".format(tables[tab_ind]))
+        for table_name_index in range(len(table_names)):
+            cur.execute("SELECT * FROM {}".format(table_names[table_name_index]))
             table_list = []
-            timers = cur.fetchall()
-            for timer in timers:
-                temp = {}
-                for index in range(len(timer)):
-                    temp[timer.keys()[index]] = timer[index]
-                table_list.append(temp)
-            self.tables_dict[tables[tab_ind]] = table_list
 
+            timers = cur.fetchone()
+            while timers:
+                table_list.append(dict(zip(timers.keys(), timers)))
+                timers = cur.fetchone()
+
+            self.tables_dict[table_names[table_name_index]] = table_list
         con.close()
 
     def save(self, database="timer.db", file_path=os.getcwd() + "\\"):
