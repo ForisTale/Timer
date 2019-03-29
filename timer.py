@@ -36,10 +36,6 @@ class Timer:
         self.comment_full_message = ""
         self.comment_full_message += " " + input("Please write comment: ")
 
-    def reset_tags(self):
-        for key, value in self.tags.items():
-            self.tags[key] = 0
-
     def mark_tags(self):
         """Take input with tags marks
         """
@@ -66,9 +62,9 @@ class Timer:
             self.tags[item] = 1
 
     def reset_data(self):
-        """reset self.data
-        """
         self.data = {"timer": []}
+        for key, value in self.tags.items():
+            self.tags[key] = 0
 
     def set_data(self):
         """set all need data into useful schema

@@ -7,9 +7,9 @@ def initialize(timer, database):
         if inp == "auto":
             automatic_execution(timer, database)
         elif inp == "start_time":
-            start_time(timer)
+            start_count_time(timer)
         elif inp == "end_time":
-            end_time(timer)
+            end_count_time(timer)
         elif inp == "comment":
             write_comment(timer)
         elif inp == "tag":
@@ -17,7 +17,7 @@ def initialize(timer, database):
         elif inp == "id":
             set_id(timer, database)
         elif inp == "read":
-            read(database)
+            print_records(database)
         elif inp == "save":
             save(timer, database)
         elif inp == "close":
@@ -30,7 +30,6 @@ def initialize(timer, database):
 
 def automatic_execution(timer, database):
     timer.reset_data()
-    timer.reset_tags()
     timer.start()
     while True:
         input("Press ENTER to ends the time counting.")
@@ -45,11 +44,11 @@ def automatic_execution(timer, database):
     database.add_entry(timer.data)
 
 
-def start_time(timer):
+def start_count_time(timer):
     timer.start()
 
 
-def end_time(timer):
+def end_count_time(timer):
     timer.end()
 
 
@@ -71,23 +70,23 @@ def set_id(timer, database):
         print("Id was set to {}.".format(timer.id))
 
 
-def read(database):
+def print_records(database):
     while True:
         choice = input("Please choice read mode, available modes:"
                        "\n\"all\" see all entry's."
                        "\n\"last\" see last entry"
                        "\n\"few\" see last few entry's, you choice how many.\n")
         if choice == "all":
-            print(database.read())
+            print(database.read_database())
             enter_to_continue()
             break
         elif choice == "last":
-            print(database.read(1))
+            print(database.read_database(1))
             enter_to_continue()
             break
         elif choice == "few":
             amount = input("Please write how many records you want to see: ")
-            print(database.read(int(amount)))
+            print(database.read_database(int(amount)))
             enter_to_continue()
             break
         elif choice == "help":

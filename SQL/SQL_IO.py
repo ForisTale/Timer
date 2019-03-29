@@ -3,12 +3,10 @@ import os
 
 
 class Database:
-    """
-    """
-
+    # TODO rebuild load database that it will load read file every time instead of make dict
     def __init__(self):
         self.tables_dict = {}
-        self.load()
+        self.load_database()
         self.new_entry = {}
         self.delete_entry = {}
 
@@ -17,12 +15,10 @@ class Database:
         return str(self.tables_dict)
     """
 
-    def load(self, database="timer.db", file_path=os.getcwd() + "\\"):
-        """This method will load database into two dictionaries
-        database need to be string with file name
-        file_path need to be string with path to database file
-        return all tables from database as {table:[list of row as dict]} into
-        variable table_dict"""
+    def load_database(self, database="timer.db", file_path=os.getcwd() + "\\"):
+        """
+        return all tables from database as {table:[list of row as dict]}
+        """
         self.tables_dict = {}
         con = sqlite3.connect(file_path + database)
         con.row_factory = sqlite3.Row
@@ -50,7 +46,7 @@ class Database:
             self.tables_dict[table_names[table_name_index]] = table_list
         con.close()
 
-    def save(self, database="timer.db", file_path=os.getcwd() + "\\"):
+    def save_database(self, database="timer.db", file_path=os.getcwd() + "\\"):
         """This method will save changes in database into file
         """
         con = sqlite3.connect(file_path + database)
@@ -94,14 +90,13 @@ class Database:
                     if self.tables_dict[key]:
                         if item.keys() == self.tables_dict[key][0].keys() \
                                 or not self.tables_dict[key][0]:
-                            if self.check_id(item["id"]):
-                                # self.tables_dict[key].append(value)
-                                self.new_entry[key].append(item)
-                                print("Entry: ", item)
-                            else:
+                            if self.id_is_in_use(item["id"]):
                                 item["id"] = self.auto_id()
                                 print("Whole entry: {}".format(item))
                                 self.new_entry[key].append(item)
+                            else:
+                                self.new_entry[key].append(item)
+                                print("Entry: ", item)
                         else:
                             print("Column names are not the same as they are" 
                                   "in table.")
@@ -112,10 +107,10 @@ class Database:
             else:
                 print("Table name is incorrect")
 
-        self.save()
-        self.load()
+        self.save_database()
+        self.load_database()
 
-    def read(self, limit=0):
+    def read_database(self, limit=0):
         """return table_dict as nice looking string
         """
         string = "Database: "
@@ -131,14 +126,12 @@ class Database:
                         + str(len(tableItems)) + " records.")
         return string
 
-    def check_id(self, id_num, id_name="id"):
-        """will return true if id is NOT in use
-        """
+    def id_is_in_use(self, id_num, id_name="id"):
         temp_ids = []
         for key, value in self.tables_dict.items():
             for item in value:
                 temp_ids.append(item[id_name])
-        if id_num not in temp_ids:
+        if id_num in temp_ids:
             return True
         else:
             return False
@@ -147,7 +140,7 @@ class Database:
         """return usable, unique id for tables_dict
         """
         id_num = 0
-        while not self.check_id(id_num):
+        while self.id_is_in_use(id_num):
             id_num += 1
         return id_num
 
