@@ -1,6 +1,8 @@
 from sql.sql_io import Database
 from timer import Timer
-from interface import Interface
+from interface import initialize
 
+d = Database()
+t = Timer()
 
-Interface(Timer(), Database()).initialize()
+initialize(t, d)
