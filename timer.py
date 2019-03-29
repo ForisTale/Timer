@@ -8,7 +8,7 @@ class Timer:
     def __init__(self):
         self.data = {"timer": []}
         self.time = []
-        self.comments = ""
+        self.comment_full_message = ""
         self.tags = {"python": 0, "sql": 0, "eng": 0, "jap": 0, "other": 0}
         self.id = 0
 
@@ -30,17 +30,17 @@ class Timer:
         else:
             print("First use command start.")
 
-    def comment(self):
+    def write_comment(self):
         """take comment
         """
-        self.comments = ""
-        self.comments += " " + input("Please write comment: ")
+        self.comment_full_message = ""
+        self.comment_full_message += " " + input("Please write comment: ")
 
     def reset_tags(self):
         for key, value in self.tags.items():
             self.tags[key] = 0
 
-    def add_tags(self):
+    def mark_tags(self):
         """Take input with tags marks
         """
         t = ""
@@ -75,7 +75,7 @@ class Timer:
         """
         if self.time:
             combine = {"id": self.id, "start": self.time[0],
-                       "end": self.time[1], "comment": self.comments,
+                       "end": self.time[1], "comment": self.comment_full_message,
                        **self.tags}
             self.data["timer"].append(combine)
         else:
