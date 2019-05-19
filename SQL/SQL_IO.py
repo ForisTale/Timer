@@ -15,12 +15,16 @@ class Database:
         return str(self.tables_dict)
     """
 
-    def load_database(self, database="timer.db", file_path=os.getcwd() + "\\"):
+    def load_database(self, database="timer.db", file_path=os.getcwd()):
         """
         return all tables from database as {table:[list of row as dict]}
         """
+        if os.name == "nt":
+            slash = "\\"
+        else:
+            slash = "/"
         self.tables_dict = {}
-        con = sqlite3.connect(file_path + database)
+        con = sqlite3.connect(file_path + slash + database)
         con.row_factory = sqlite3.Row
         cur = con.cursor()
 
@@ -46,10 +50,14 @@ class Database:
             self.tables_dict[table_names[table_name_index]] = table_list
         con.close()
 
-    def save_database(self, database="timer.db", file_path=os.getcwd() + "\\"):
+    def save_database(self, database="timer.db", file_path=os.getcwd()):
         """This method will save changes in database into file
         """
-        con = sqlite3.connect(file_path + database)
+        if os.name == "nt":
+            slash = "\\"
+        else:
+            slash = "/"
+        con = sqlite3.connect(file_path + slash + database)
         con.row_factory = sqlite3.Row
         cur = con.cursor()
 
