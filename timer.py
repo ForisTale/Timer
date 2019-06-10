@@ -55,7 +55,6 @@ class Timer:
                     print("There is no such tag: " + item)
                     inp = input(text)
                     inp = inp.split(" ")
-                    break
             if index == len(inp):
                 break
         for item in inp:
